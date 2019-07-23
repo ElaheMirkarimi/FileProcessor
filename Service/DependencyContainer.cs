@@ -9,11 +9,6 @@ namespace Service
 {
     public class DependencyContainer
     {
-        //public DependencyContainer(IConfiguration configuration)
-        //{
-        //    Configuration = configuration;
-        //}
-        //public IConfiguration Configuration { get; }
         public static IServiceCollection RegisterServices()
         {
             var services = new ServiceCollection();

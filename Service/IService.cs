@@ -8,7 +8,5 @@ namespace Service
     public interface IService
     {
         void insertFile(string[] file);
-        void RegisterServices();
-        void Disposeservices();
     }
 }

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Service
+namespace Storage
 {
-    public class Files
+    public class FilesEntity
     {
         public int Id { get; set; }
         public string FileName { get; set; }

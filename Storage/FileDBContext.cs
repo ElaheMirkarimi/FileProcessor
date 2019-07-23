@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Service;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -17,6 +16,6 @@ namespace Storage
         public FileDBContext(DbContextOptions option) : base(option)
         {
         }
-        public DbSet<Files> Files { get; set; }
+        public DbSet<FilesEntity> Files { get; set; }
     }
 }

@@ -7,6 +7,8 @@ namespace Service
 {
     public interface IService
     {
-        Task insertFile(string[] file);
+        void insertFile(string[] file);
+        void RegisterServices();
+        void Disposeservices();
     }
 }

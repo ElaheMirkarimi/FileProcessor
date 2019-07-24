@@ -1,23 +1,34 @@
-﻿using System;
-using System.IO;
-using System.Configuration;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Service;
+using Storage;
+using Infra.Data;
+using System.IO;
 
 namespace MainApp
 {
     class Program
     {
-        public static IServiceProvider _Iservice;
         static void Main()
         {
-            Console.WriteLine("Please enter the path of the files: ");
-            var filesPath = Console.ReadLine();
-            var files = Directory.GetFiles(filesPath);
-            _Iservice = DependencyContainer.RegisterServices().BuildServiceProvider();
-            _Iservice.GetService<IService>().insertFile(files);
+            var services = new ServiceCollection()
+                .AddLogging(options => options.AddConsole());
+            
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json");
+            services.AddSingleton(builder.Build());
+
+            services.AddTransient<IFileDbContextBuilder, FileDbContextBuilder>();
+            services.AddTransient<IFileService, FileService>();
+            services.AddTransient<IFileStore, FileStore>();
+            services.AddTransient<IBootstrapper, Bootstrapper>();
+
+            var serviceProvider = services.BuildServiceProvider();
+                        
+            var bootstrapper = serviceProvider.GetService<IBootstrapper>();
+            bootstrapper.Run().GetAwaiter().GetResult();
         }
     }
 }

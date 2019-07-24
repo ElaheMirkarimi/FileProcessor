@@ -1,15 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using Entity;
 
 namespace Storage
 {
-    public class FileDBContext : DbContext 
+    public class FileDbContext : DbContext
     {
-        public FileDBContext(DbContextOptions option) : base(option)
-        {
-        }
-        public DbSet<FilesEntity> Files { get; set; }
+        public FileDbContext(DbContextOptions option) : base(option) { }
+        public DbSet<File> Files { get; set; }
     }
 }

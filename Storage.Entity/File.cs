@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Storage
+﻿namespace Entity
 {
-    public class FilesEntity
+    public class File
     {
         public int Id { get; set; }
         public string FileName { get; set; }

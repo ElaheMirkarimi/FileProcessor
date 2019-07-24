@@ -8,7 +8,7 @@ using Storage;
 
 namespace Storage.Migrations
 {
-    [DbContext(typeof(FileDBContext))]
+    [DbContext(typeof(FileDbContext))]
     [Migration("20190719212855_NewDatabase")]
     partial class NewDatabase
     {

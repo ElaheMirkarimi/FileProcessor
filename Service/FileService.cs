@@ -1,4 +1,5 @@
 ﻿using Infra.Data;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,32 +9,29 @@ namespace Service
 {
     public class FileService : IFileService
     {
-        private IFileStore _store;
-        public FileService(IFileStore store) => _store = store;
-
-        public async Task InsertFilesAsync(string[] files)
+        //private IFileStore _store;
+        private IServiceProvider _serviceProvider;
+        public FileService(/*IFileStore store,*/ IServiceProvider serviceProvider)
         {
-            var tasks = new List<Task>();
-            foreach (var filePath in files)
-            {
-                var entity = CreaateEntity(filePath);
-                var task = _store.SaveDataAsync(entity);
-                tasks.Add(task);
-            }
-            await Task.WhenAll(tasks);
+            //_store = store;
+            _serviceProvider = serviceProvider;
         }
 
         public async Task InsertFilesBatchAsync(string[] files)
         {
             var fileList = new List<Entity.File>();
-            foreach (var filePath in files)
+            Parallel.ForEach(files, filePath =>
             {
-                fileList.Add(CreaateEntity(filePath));
+                fileList.Add(CreateEntity(filePath));
+            });
+            //await _store.SaveDataBatchAsync(fileList);
+            using (var scope = _serviceProvider.CreateScope())
+            {
+                await scope.ServiceProvider.GetService<IFileStore>().SaveDataBatchAsync(fileList);
             }
-            await _store.SaveDataBatchAsync(fileList);
         }
 
-        private Entity.File CreaateEntity(string filePath)
+        private Entity.File CreateEntity(string filePath)
         {
             filePath.Trim();
             var fileName = Path.GetFileName(filePath);

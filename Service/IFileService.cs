@@ -4,6 +4,6 @@ namespace Service
 {
     public interface IFileService
     {
-        Task InsertFilesAsync(string[] files);
+        Task InsertFilesBatchAsync(string[] files);
     }
 }

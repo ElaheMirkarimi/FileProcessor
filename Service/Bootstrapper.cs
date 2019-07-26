@@ -12,9 +12,9 @@ namespace Service
         public async Task Run()
         {
             Console.WriteLine("Please enter the path of the files: ");
-            var filesPath = Console.ReadLine();
+            var filesPath = "f:\\test";// Console.ReadLine();
             var files = Directory.GetFiles(filesPath);
-            await _service.InsertFilesAsync(files);
+            await _service.InsertFilesBatchAsync(files);
             Console.WriteLine("Execution completed successfully.");
         }
     }

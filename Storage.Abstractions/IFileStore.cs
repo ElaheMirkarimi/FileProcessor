@@ -6,7 +6,6 @@ namespace Infra.Data
 {
     public interface IFileStore
     {
-        Task SaveDataAsync(File file);
         Task SaveDataBatchAsync(List<File> files);
     }
 }

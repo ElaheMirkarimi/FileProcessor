@@ -5,6 +5,9 @@ using Service;
 using Storage;
 using Infra.Data;
 using System.IO;
+using System.Configuration;
+using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace MainApp
 {
@@ -12,21 +15,21 @@ namespace MainApp
     {
         static void Main()
         {
-            var services = new ServiceCollection()
-                .AddLogging(options => options.AddConsole());
-            
             var builder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json");
-            services.AddSingleton(builder.Build());
+            IConfigurationRoot configur = builder.Build();
 
-            services.AddTransient<IFileDbContextBuilder, FileDbContextBuilder>();
+            var services = new ServiceCollection()
+                .AddLogging(options => options.AddConsole())
+                .AddDbContext<FileDbContext>(options => options
+                .UseSqlServer(configur.GetConnectionString("fileDb")));
+
             services.AddTransient<IFileService, FileService>();
-            services.AddTransient<IFileStore, FileStore>();
+            services.AddScoped<IFileStore, FileStore>();
             services.AddTransient<IBootstrapper, Bootstrapper>();
 
             var serviceProvider = services.BuildServiceProvider();
-                        
             var bootstrapper = serviceProvider.GetService<IBootstrapper>();
             bootstrapper.Run().GetAwaiter().GetResult();
         }

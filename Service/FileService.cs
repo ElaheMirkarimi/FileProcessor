@@ -40,7 +40,6 @@ namespace Service
                 FileName = fileName,
                 FilePath = filePath,
                 Month = Convert.ToInt16(fileSection[0].Substring(4, 2)),
-                //Month = short.Parse(fileSection[0]),
                 Guid = fileSection[1],
                 Version = Convert.ToInt16(fileSection[2].Substring(1, 2))
             };

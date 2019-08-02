@@ -1,34 +1,33 @@
-﻿using Infra.Data;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Service.Interface;
 using System;
-using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Service
 {
     public class FileService : IFileService
     {
-        //private IFileStore _store;
-        private IServiceProvider _serviceProvider;
-        public FileService(/*IFileStore store,*/ IServiceProvider serviceProvider)
+        private readonly IFileStore _fileStore;
+
+
+        public FileService(IFileStore fileStore)
         {
-            //_store = store;
-            _serviceProvider = serviceProvider;
+
+            _fileStore = fileStore;
         }
 
         public async Task InsertFilesBatchAsync(string[] files)
         {
-            var fileList = new List<Entity.File>();
+            var fileList = new ConcurrentBag<Entity.File>();
+
             Parallel.ForEach(files, filePath =>
             {
                 fileList.Add(CreateEntity(filePath));
             });
-            //await _store.SaveDataBatchAsync(fileList);
-            using (var scope = _serviceProvider.CreateScope())
-            {
-                await scope.ServiceProvider.GetService<IFileStore>().SaveDataBatchAsync(fileList);
-            }
+
+            await _fileStore.SaveDataBatchAsync(fileList.ToList());
         }
 
         private Entity.File CreateEntity(string filePath)
@@ -41,6 +40,7 @@ namespace Service
                 FileName = fileName,
                 FilePath = filePath,
                 Month = Convert.ToInt16(fileSection[0].Substring(4, 2)),
+                //Month = short.Parse(fileSection[0]),
                 Guid = fileSection[1],
                 Version = Convert.ToInt16(fileSection[2].Substring(1, 2))
             };

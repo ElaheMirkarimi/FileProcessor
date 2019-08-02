@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
-using Infra.Data;
-using Entity;
+using Service.Entity;
+using Service.Interface;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;

@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Entity;
+using Service.Entity;
 
 namespace Storage
 {

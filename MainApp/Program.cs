@@ -3,11 +3,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Service;
 using Storage;
-using Infra.Data;
 using System.IO;
-using System.Configuration;
 using Microsoft.EntityFrameworkCore;
-using System;
+using Service.Interface;
 
 namespace MainApp
 {
@@ -25,9 +23,9 @@ namespace MainApp
                 .AddDbContext<FileDbContext>(options => options
                 .UseSqlServer(configur.GetConnectionString("fileDb")));
 
-            services.AddTransient<IFileService, FileService>();
+            services.AddScoped<IFileService, FileService>();
             services.AddScoped<IFileStore, FileStore>();
-            services.AddTransient<IBootstrapper, Bootstrapper>();
+            services.AddSingleton<IBootstrapper, Bootstrapper>();
 
             var serviceProvider = services.BuildServiceProvider();
             var bootstrapper = serviceProvider.GetService<IBootstrapper>();

@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Service
+namespace Service.Interface
 {
     public interface IBootstrapper
     {

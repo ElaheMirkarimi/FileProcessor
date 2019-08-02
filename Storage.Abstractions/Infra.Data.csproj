@@ -9,8 +9,4 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="2.2.6" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Storage.Entity\Entity.csproj" />
-  </ItemGroup>
-
 </Project>

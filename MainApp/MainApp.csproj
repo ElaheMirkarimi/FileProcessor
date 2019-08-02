@@ -16,7 +16,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Service\Service.csproj" />
-    <ProjectReference Include="..\Storage.Abstractions\Infra.Data.csproj" />
     <ProjectReference Include="..\Storage\Storage.csproj" />
   </ItemGroup>
 
